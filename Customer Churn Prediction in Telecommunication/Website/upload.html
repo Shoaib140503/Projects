@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Churn Prediction for Multiple Customers</title>
+    <!-- Include Tailwind CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-semibold mb-8 text-center">
+      Churn Prediction for Multiple Customers
+    </h1>
+
+    <div class="max-w-md mx-auto bg-white p-6 rounded-md shadow-md">
+      <form enctype="multipart/form-data" id="uploadForm">
+        <div class="mb-4">
+          <label for="csvFile" class="block text-sm font-medium text-gray-700"
+            >Upload CSV Dataset:</label
+          >
+          <input
+            type="file"
+            id="csvFile"
+            name="csvFile"
+            accept=".csv"
+            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        <div class="mt-4">
+          <button
+            type="submit"
+            class="w-full bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+          >
+            Upload and Predict
+          </button>
+        </div>
+      </form>
+
+      <!-- Table to display Customer ID and Churn Prediction -->
+      <div id="predictionResult" class="hidden mt-8">
+        <h2 class="text-xl font-semibold mb-4">Prediction Result</h2>
+        <table class="w-full border-collapse border border-gray-400">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 bg-gray-200 border border-gray-400">
+                Customer ID
+              </th>
+              <th class="py-2 px-4 bg-gray-200 border border-gray-400">
+                Churn Prediction
+              </th>
+            </tr>
+          </thead>
+          <tbody id="predictionTableBody">
+            <!-- Table rows will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Loading animation -->
+    <div
+      id="loading"
+      class="hidden fixed top-0 left-0 w-full h-full bg-gray-800 opacity-75 flex items-center justify-center z-50"
+    >
+      <div
+        class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24"
+      ></div>
+    </div>
+
+    <!-- JavaScript to handle form submission and show loading animation -->
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent form submission
+          var formData = new FormData(this);
+          var loadingOverlay = document.getElementById("loading");
+          loadingOverlay.classList.remove("hidden"); // Show loading overlay
+          setTimeout(function () {
+            loadingOverlay.classList.add("hidden"); // Hide loading overlay after 3 seconds (simulate prediction process)
+            // In a real scenario, you would make an AJAX request to a server for prediction
+            // After receiving the prediction result, you can display it on the webpage
+            // For simplicity, I'm just displaying a sample result here
+            var predictionResult = [
+              { customerId: "001", churnPrediction: "Yes" },
+              { customerId: "002", churnPrediction: "No" },
+              { customerId: "003", churnPrediction: "Yes" },
+            ];
+
+            var predictionTableBody = document.getElementById(
+              "predictionTableBody"
+            );
+            // Clear existing table rows
+            predictionTableBody.innerHTML = "";
+
+            // Add new table rows with prediction results
+            predictionResult.forEach(function (result) {
+              var row = document.createElement("tr");
+              row.innerHTML =
+                '<td class="py-2 px-4 border border-gray-400">' +
+                result.customerId +
+                "</td>" +
+                '<td class="py-2 px-4 border border-gray-400">' +
+                result.churnPrediction +
+                "</td>";
+              predictionTableBody.appendChild(row);
+            });
+
+            // Show prediction result section
+            document
+              .getElementById("predictionResult")
+              .classList.remove("hidden");
+          }, 3000);
+        });
+    </script>
+  </body>
+</html>
